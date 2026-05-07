@@ -8,7 +8,14 @@ import { errorHandler } from './middleware/error'
 const app = express()
 
 app.use(helmet())
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',')
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.some(o => origin.startsWith(o.trim()))) cb(null, true)
+    else cb(new Error('CORS'))
+  },
+  credentials: true
+}))
 app.use(morgan('dev'))
 app.use(express.json())
 
