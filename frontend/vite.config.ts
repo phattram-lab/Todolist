@@ -7,5 +7,6 @@ export default defineConfig({
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') }
   },
+  base: process.env.GITHUB_ACTIONS ? '/Todolist/' : '/',
   server: { port: 5173 }
 })
